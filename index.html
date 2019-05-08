@@ -1,7 +1,39 @@
+<!DOCTYPE html>
 <html>
-<h1>
-    hii
-</h1>
 
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#test").change(function () {
+                txt1 = $("#test").val();
+                console.log(txt1);
+                $.ajax({
+                    type: "POST",
+                    url: "jqueryphp.php",
+                    data: {
+                        txt1: $("#test").val()
+                    },
+                    success: function (result) {
+                        $("div").html(result);
+                        $('#test1').val(result);
+                    }
+                });
+                //   	txt1= $("#test").val();
+                //    $("p").html(txt1);
+
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <input id="test" type="text">
+    <input id="test1" type="text">
+    <p></p>
+
+
+</body>
 
 </html>
