@@ -3,7 +3,7 @@
 if (!empty($_FILES['file']['name'])) {
     $uploadedFile = '';
     $uploadedfile1 = $_FILES['file']['name'];
-
+    formatfolder();
     if (!empty($_FILES["file"]["type"])) {
         $fileName = time() . '_' . $_FILES['file']['name'];
         $valid_extensions = array("jpeg", "jpg", "png");
@@ -23,7 +23,7 @@ if (!empty($_FILES['file']['name'])) {
             }
             if (move_uploaded_file($sourcePath, $targetPath)) {
                 $uploadedFile = $fileName;
-             
+
                 list($width, $height) = getimagesize('uploads/' . $fileName);
                 $newwidth = 60;
                 $newheight = ($height / $width) * $newwidth;
@@ -71,6 +71,24 @@ if (!empty($_FILES['file']['name'])) {
         }
     }
 
+
+
     echo "images/small" . $_FILES['file']['name'];
     // echo $insert?'ok':'err';
+}
+function formatfolder()
+{
+    $folder = 'images';
+
+    //Get a list of all of the file names in the folder.
+    $files = glob($folder . '/*');
+
+    //Loop through the file list.
+    foreach ($files as $file) {
+        //Make sure that this is a file and not a directory.
+        if (is_file($file)) {
+            //Use the unlink function to delete the file.
+            unlink($file);
+        }
+    }
 }
