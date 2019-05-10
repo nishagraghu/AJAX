@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://files.codepedia.info/files/uploads/iScripts/html2canvas.js"></script>
+</head>
+
+<body>
+    <div id="html-content-holder" style="background-color: #F0F0F1; color: #00cc65; width: 500px;
+        padding-left: 25px; padding-top: 10px;">
+        <strong>Codepedia.info</strong>
+        <hr />
+        <h3 style="color: #3e4b51;">
+            Html to canvas, and canvas to proper image
+        </h3>
+        <p style="color: #3e4b51;">
+            <b>Codepedia.info</b> is a programming blog. Tutorials focused on Programming ASP.Net,
+            C#, jQuery, AngularJs, Gridview, MVC, Ajax, Javascript, XML, MS SQL-Server, NodeJs,
+            Web Design, Software</p>
+        <p style="color: #3e4b51;">
+            <b>html2canvas</b> script allows you to take "screenshots" of webpages or parts
+            of it, directly on the users browser. The screenshot is based on the DOM and as
+            such may not be 100% accurate to the real representation.
+        </p>
+    </div>
+    <a id="btn-Convert-Html2Image" href="#">Download</a>
+    <br />
+
+
+    <script>
+        $(document).ready(function () {
+
+
+            var element = $("#html-content-holder"); // global variable
+
+
+            $("#btn-Convert-Html2Image").on('click', function () {
+                html2canvas(element, {
+                    onrendered: function (canvas) {
+                        var imgageData = canvas.toDataURL("image/png");
+                        var newData = imgageData.replace(/^data:image\/png;base64,/, "");
+                        var fileName = 'your_pic_name.png';
+                        var binary = fixBinary(atob(newData));
+                        var blobObject = new Blob([binary], {
+                            type: 'image/png'
+                        });
+
+                        // Internet Explorer
+                        if (window.navigator.msSaveOrOpenBlob) {
+                            window.navigator.msSaveOrOpenBlob(blobObject, fileName);
+                        } else {
+                            // Chrome
+                            var downloadLink = document.createElement("a");
+                            downloadLink.href = window.URL.createObjectURL(blobObject);
+                            downloadLink.download = fileName;
+                            document.body.appendChild(downloadLink);
+                            downloadLink.click();
+                            document.body.removeChild(downloadLink);
+                        }
+                    }
+                });
+
+            });
+
+            function fixBinary(bin) {
+                var length = bin.length;
+                var buf = new ArrayBuffer(length);
+                var arr = new Uint8Array(buf);
+                for (var i = 0; i < length; i++) {
+                    arr[i] = bin.charCodeAt(i);
+                }
+                return buf;
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>
